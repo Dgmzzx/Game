@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Breaker - Juego Moderno</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1 class="title">BLOCK BREAKER</h1>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">NIVEL</span>
+                    <span class="stat-value" id="level-display">1</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">PUNTOS</span>
+                    <span class="stat-value" id="score-display">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">VIDAS</span>
+                    <span class="stat-value" id="lives-display">3</span>
+                </div>
+            </div>
+        </div>
+        
+        <canvas id="gameCanvas"></canvas>
+        
+        <div class="menu-overlay" id="start-menu">
+            <div class="menu-content">
+                <h2 class="menu-title">BLOCK BREAKER</h2>
+                <p class="menu-subtitle">Rompe todos los bloques y avanza de nivel</p>
+                <button class="btn-primary" id="start-btn">JUGAR</button>
+                <div class="controls-info">
+                    <p>🖱️ PC: Usa las flechas ← →</p>
+                    <p>📱 Móvil: Desliza el dedo</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-overlay hidden" id="level-complete-menu">
+            <div class="menu-content">
+                <h2 class="menu-title glow">¡NIVEL COMPLETADO!</h2>
+                <p class="menu-subtitle" id="level-complete-text">Preparándote para el siguiente nivel...</p>
+                <button class="btn-primary" id="next-level-btn">CONTINUAR</button>
+            </div>
+        </div>
+        
+        <div class="menu-overlay hidden" id="game-over-menu">
+            <div class="menu-content">
+                <h2 class="menu-title game-over">GAME OVER</h2>
+                <p class="menu-subtitle" id="final-score">Puntuación final: 0</p>
+                <button class="btn-primary" id="restart-btn">REINTENTAR</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
