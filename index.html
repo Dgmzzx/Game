@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Block Breaker - Juego Moderno</title>
+    <title>Neon Breaker</title>
     <style>
         * {
             margin: 0;
@@ -30,6 +30,7 @@
             flex-direction: column;
             align-items: center;
             gap: 20px;
+            position: relative;
         }
 
         .header {
@@ -203,6 +204,35 @@
             margin: 8px 0;
         }
 
+        .bullet-counter {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 170, 0, 0.2);
+            border: 2px solid #ffaa00;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #ffaa00;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.8);
+            display: none;
+        }
+
+        .bullet-counter.active {
+            display: block;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
         @media (max-width: 768px) {
             .game-container {
                 padding: 10px;
@@ -221,6 +251,10 @@
             .menu-content {
                 padding: 30px 20px;
             }
+
+            .controls-info p {
+                margin: 5px 0;
+            }
         }
 
         @media (max-height: 700px) {
@@ -238,7 +272,7 @@
 <body>
     <div class="game-container">
         <div class="header">
-            <h1 class="title">BLOCK BREAKER</h1>
+            <h1 class="title">NEON BREAKER</h1>
             <div class="stats">
                 <div class="stat-item">
                     <span class="stat-label">NIVEL</span>
@@ -257,14 +291,17 @@
         
         <canvas id="gameCanvas"></canvas>
         
+        <div class="bullet-counter" id="bullet-counter">🔫 Balas: <span id="bullet-count">0</span></div>
+        
         <div class="menu-overlay" id="start-menu">
             <div class="menu-content">
-                <h2 class="menu-title">BLOCK BREAKER</h2>
+                <h2 class="menu-title">NEON BREAKER</h2>
                 <p class="menu-subtitle">Rompe todos los bloques y avanza de nivel</p>
                 <button class="btn-primary" id="start-btn">JUGAR</button>
                 <div class="controls-info">
                     <p>PC: Usa las flechas</p>
                     <p>Movil: Desliza el dedo</p>
+                    <p>Dispara: Barra espaciadora / Toca arriba</p>
                 </div>
             </div>
         </div>
@@ -355,7 +392,13 @@
             { type: "multiball", color: "#ff00ff", symbol: "●●", effect: "Bolas múltiples" },
             { type: "speed", color: "#ffaa00", symbol: "⚡", effect: "Velocidad extra" },
             { type: "shrink", color: "#ff0080", symbol: "⬍", effect: "Paleta pequeña" },
+            { type: "bullets", color: "#ffd700", symbol: "🔫", effect: "Balas para disparar" },
         ];
+
+        // Bullets
+        let bullets = [];
+        let bulletCount = 0;
+        const maxBullets = 20;
 
         // Audio context
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -401,6 +444,9 @@
 
             balls = [createBall()];
             powerUps = [];
+            bullets = [];
+            bulletCount = 0;
+            updateBulletDisplay();
 
             createBricks();
         }
@@ -483,6 +529,16 @@
             });
         }
 
+        function drawBullets() {
+            bullets.forEach((bullet) => {
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = "#ffd700";
+                ctx.fillStyle = "#ffd700";
+                ctx.fillRect(bullet.x - 2, bullet.y, 4, 12);
+                ctx.shadowBlur = 0;
+            });
+        }
+
         // Movement functions
         function movePaddle() {
             paddle.x += paddle.dx;
@@ -544,43 +600,47 @@
             });
         }
 
-        function applyPowerUp(type) {
-            switch (type) {
-                case "enlarge":
-                    paddle.width = Math.min(150, paddle.width + 30);
-                    setTimeout(() => {
-                        paddle.width = Math.max(100, paddle.width - 30);
-                    }, 10000);
-                    break;
-                case "multiball":
-                    if (balls.length < 5) {
-                        const mainBall = balls[0];
-                        balls.push(createBall(mainBall.x, mainBall.y, -mainBall.dx, mainBall.dy));
-                        balls.push(createBall(mainBall.x, mainBall.y, mainBall.dx * 1.2, mainBall.dy));
+        function moveBullets() {
+            bullets.forEach((bullet, bulletIndex) => {
+                bullet.y -= bullet.speed;
+
+                // Remove bullets that go off screen
+                if (bullet.y < 0) {
+                    bullets.splice(bulletIndex, 1);
+                    return;
+                }
+
+                // Check collision with bricks
+                bricks.forEach((brick) => {
+                    if (brick.visible) {
+                        if (
+                            bullet.x > brick.x &&
+                            bullet.x < brick.x + brick.width &&
+                            bullet.y > brick.y &&
+                            bullet.y < brick.y + brick.height
+                        ) {
+                            brick.visible = false;
+                            bullets.splice(bulletIndex, 1);
+                            score += 10 * level;
+                            updateDisplay();
+                            playBrickSound();
+
+                            if (brick.hasPowerUp) {
+                                const powerUpType = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
+                                powerUps.push({
+                                    x: brick.x + brick.width / 2 - 15,
+                                    y: brick.y,
+                                    size: 30,
+                                    speed: 2,
+                                    type: powerUpType.type,
+                                    color: powerUpType.color,
+                                    symbol: powerUpType.symbol,
+                                });
+                            }
+                        }
                     }
-                    break;
-                case "speed":
-                    balls.forEach((ball) => {
-                        ball.dx *= 1.3;
-                        ball.dy *= 1.3;
-                    });
-                    setTimeout(() => {
-                        balls.forEach((ball) => {
-                            ball.dx /= 1.3;
-                            ball.dy /= 1.3;
-                        });
-                    }, 8000);
-                    break;
-                case "shrink":
-                    paddle.width = Math.max(60, paddle.width - 20);
-                    lives = Math.max(0, lives - 1);
-                    updateDisplay();
-                    playLoseLifeSound();
-                    setTimeout(() => {
-                        paddle.width = Math.min(100, paddle.width + 20);
-                    }, 8000);
-                    break;
-            }
+                });
+            });
         }
 
         // Collision detection
@@ -625,6 +685,18 @@
             document.getElementById("level-display").textContent = level;
         }
 
+        function updateBulletDisplay() {
+            const counter = document.getElementById("bullet-counter");
+            const countSpan = document.getElementById("bullet-count");
+            countSpan.textContent = bulletCount;
+            
+            if (bulletCount > 0) {
+                counter.classList.add("active");
+            } else {
+                counter.classList.remove("active");
+            }
+        }
+
         // Check win condition
         function checkWin() {
             return bricks.every((brick) => !brick.visible);
@@ -640,9 +712,11 @@
             drawPaddle();
             balls.forEach((ball) => drawBall(ball));
             drawPowerUps();
+            drawBullets();
 
             movePaddle();
             movePowerUps();
+            moveBullets();
 
             balls = balls.filter((ball) => moveBall(ball));
 
@@ -740,6 +814,9 @@
                 paddle.dx = -paddle.speed;
             } else if (e.key === "ArrowRight" || e.key === "Right") {
                 paddle.dx = paddle.speed;
+            } else if (e.key === " " || e.key === "Spacebar") {
+                e.preventDefault();
+                shootBullet();
             }
         });
 
@@ -752,11 +829,13 @@
         // Touch controls
         let touchStartX = 0;
         let touchCurrentX = 0;
+        let touchStartY = 0;
 
         canvas.addEventListener("touchstart", (e) => {
             if (gameState !== "playing") return;
             touchStartX = e.touches[0].clientX;
             touchCurrentX = touchStartX;
+            touchStartY = e.touches[0].clientY;
         });
 
         canvas.addEventListener("touchmove", (e) => {
@@ -778,8 +857,77 @@
             paddle.dx = 0;
         });
 
+        canvas.addEventListener("touchend", (e) => {
+            if (gameState !== "playing") return;
+            
+            const touchEndY = e.changedTouches[0].clientY;
+            const deltaY = touchStartY - touchEndY;
+            
+            if (deltaY > 30) {
+                shootBullet();
+            }
+        });
+
         // Initialize display
         updateDisplay();
+
+        // Apply power-up
+        function applyPowerUp(type) {
+            switch (type) {
+                case "enlarge":
+                    paddle.width = Math.min(150, paddle.width + 30);
+                    setTimeout(() => {
+                        paddle.width = Math.max(100, paddle.width - 30);
+                    }, 10000);
+                    break;
+                case "multiball":
+                    if (balls.length < 5) {
+                        const mainBall = balls[0];
+                        balls.push(createBall(mainBall.x, mainBall.y, -mainBall.dx, mainBall.dy));
+                        balls.push(createBall(mainBall.x, mainBall.y, mainBall.dx * 1.2, mainBall.dy));
+                    }
+                    break;
+                case "speed":
+                    balls.forEach((ball) => {
+                        ball.dx *= 1.3;
+                        ball.dy *= 1.3;
+                    });
+                    setTimeout(() => {
+                        balls.forEach((ball) => {
+                            ball.dx /= 1.3;
+                            ball.dy /= 1.3;
+                        });
+                    }, 8000);
+                    break;
+                case "shrink":
+                    paddle.width = Math.max(60, paddle.width - 20);
+                    lives = Math.max(0, lives - 1);
+                    updateDisplay();
+                    playLoseLifeSound();
+                    setTimeout(() => {
+                        paddle.width = Math.min(100, paddle.width + 20);
+                    }, 8000);
+                    break;
+                case "bullets":
+                    bulletCount = Math.min(maxBullets, bulletCount + 10);
+                    updateBulletDisplay();
+                    break;
+            }
+        }
+
+        // Shoot bullet
+        function shootBullet() {
+            if (bulletCount > 0 && gameState === "playing") {
+                bullets.push({
+                    x: paddle.x + paddle.width / 2,
+                    y: paddle.y,
+                    speed: 8,
+                });
+                bulletCount--;
+                updateBulletDisplay();
+                playSound(1000, 0.1, "square");
+            }
+        }
     </script>
 </body>
 </html>
