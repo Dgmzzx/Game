@@ -166,42 +166,257 @@
             color: #aaa;
             margin-bottom: 30px;
             line-height: 1.6;
+            white-space: pre-line;
         }
 
-        .btn-primary {
+        .high-score-display {
+            font-size: 1.5rem;
+            color: #ffaa00;
+            margin: 20px 0;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.8);
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .btn-menu {
             background: linear-gradient(135deg, #00f5ff 0%, #ff00ff 100%);
             color: #fff;
             border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
+            padding: 15px 50px;
+            font-size: 1.1rem;
             font-weight: 700;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.08em;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.4);
+            text-transform: uppercase;
+            min-width: 250px;
+        }
+
+        .btn-menu:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.6), 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-menu:active {
+            transform: translateY(0);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.4);
+        }
+
+        .settings-menu {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .settings-menu h3 {
+            color: #00f5ff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            text-align: center;
             text-transform: uppercase;
         }
 
-        .btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(0, 245, 255, 0.8);
+        .settings-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            padding: 5px;
+            flex-wrap: wrap;
         }
 
-        .btn-primary:active {
-            transform: scale(0.98);
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: #888;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: linear-gradient(135deg, #00f5ff 0%, #ff00ff 100%);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .setting-select {
+            background: rgba(0, 0, 0, 0.5);
+            color: #00f5ff;
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .setting-select:hover {
+            border-color: rgba(0, 245, 255, 0.6);
+        }
+
+        .setting-select option {
+            background: #1a1a2e;
+            color: #00f5ff;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 120px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            outline: none;
+            transition: opacity 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #00f5ff;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 245, 255, 0.8);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #00f5ff;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #00f5ff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        .setting-label {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .setting-value {
+            color: #00f5ff;
+            font-weight: 700;
+        }
+
+        .btn-small {
+            background: linear-gradient(135deg, #00f5ff 0%, #ff00ff 100%);
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-small:hover {
+            transform: scale(1.05);
         }
 
         .controls-info {
-            margin-top: 30px;
+            margin-top: 25px;
             padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .controls-info p {
             color: #888;
-            font-size: 0.9rem;
-            margin: 8px 0;
+            font-size: 0.85rem;
+            margin: 5px 0;
+            letter-spacing: 0.05em;
         }
 
         .bullet-counter {
@@ -297,11 +512,129 @@
             <div class="menu-content">
                 <h2 class="menu-title">NEON BREAKER</h2>
                 <p class="menu-subtitle">Rompe todos los bloques y avanza de nivel</p>
-                <button class="btn-primary" id="start-btn">JUGAR</button>
+                <div class="high-score-display">
+                    Puntaje más alto: <span id="high-score-value">0</span>
+                </div>
+                <div class="menu-buttons">
+                    <button class="btn-menu" id="start-btn">JUGAR</button>
+                    <button class="btn-menu" id="settings-btn">CONFIGURACIÓN</button>
+                </div>
+                <div class="settings-menu hidden" id="settings-panel">
+                    <h3>CONFIGURACIÓN</h3>
+                    <div class="settings-tabs">
+                        <button class="tab-btn active" data-tab="audio">Audio</button>
+                        <button class="tab-btn" data-tab="gameplay">Jugabilidad</button>
+                        <button class="tab-btn" data-tab="visual">Visual</button>
+                        <button class="tab-btn" data-tab="accessibility">Accesibilidad</button>
+                        <button class="tab-btn" data-tab="data">Datos</button>
+                    </div>
+
+                    <div class="tab-content active" id="tab-audio">
+                        <div class="setting-item">
+                            <label class="setting-label">Efectos de sonido</label>
+                            <input type="range" id="sfx-volume" min="0" max="1" step="0.1" value="0.5">
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">Música</label>
+                            <input type="range" id="music-volume" min="0" max="1" step="0.1" value="0.3">
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">Silenciar todo</label>
+                            <label class="switch">
+                                <input type="checkbox" id="mute-all">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-gameplay">
+                        <div class="setting-item">
+                            <label class="setting-label">Velocidad de bola</label>
+                            <select id="ball-speed" class="setting-select">
+                                <option value="0.7">Lenta</option>
+                                <option value="1.0" selected>Normal</option>
+                                <option value="1.3">Rápida</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">Dificultad</label>
+                            <select id="difficulty" class="setting-select">
+                                <option value="easy">Fácil (5 vidas)</option>
+                                <option value="normal" selected>Normal (3 vidas)</option>
+                                <option value="hard">Difícil (1 vida)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">Sensibilidad paleta</label>
+                            <input type="range" id="paddle-sensitivity" min="0.5" max="2" step="0.1" value="1">
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="tab-visual">
+                        <div class="setting-item">
+                            <label class="setting-label">Intensidad de brillo</label>
+                            <select id="glow-intensity" class="setting-select">
+                                <option value="0.5">Bajo</option>
+                                <option value="1.0" selected>Medio</option>
+                                <option value="1.5">Alto</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">Estela de bola</label>
+                            <label class="switch">
+                                <input type="checkbox" id="ball-trail" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">Partículas</label>
+                            <label class="switch">
+                                <input type="checkbox" id="particles" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-accessibility">
+                        <div class="setting-item">
+                            <label class="setting-label">Modo daltónico</label>
+                            <label class="switch">
+                                <input type="checkbox" id="colorblind-mode">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">Reducir animaciones</label>
+                            <label class="switch">
+                                <input type="checkbox" id="reduced-motion">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <p style="color: #888; font-size: 0.8rem; margin-top: 10px; text-align: center;">
+                            Estas opciones mejoran la experiencia para usuarios con daltonismo o sensibilidad al movimiento
+                        </p>
+                    </div>
+
+                    <div class="tab-content" id="tab-data">
+                        <div class="setting-item">
+                            <span class="setting-label">Nivel actual:</span>
+                            <span class="setting-value" id="settings-level">1</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Puntaje más alto:</span>
+                            <span class="setting-value" id="settings-high-score">0</span>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">Reiniciar puntaje:</span>
+                            <button class="btn-small" id="reset-high-score-btn">REINICIAR</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="controls-info">
-                    <p>PC: Usa las flechas</p>
-                    <p>Movil: Desliza el dedo</p>
-                    <p>Dispara: Barra espaciadora / Toca arriba</p>
+                    <p>PC: Flechas ← → para mover</p>
+                    <p>Lanzar bola: Flecha ↑ / Espacio</p>
+                    <p>Móvil: Desliza para mover / Toca arriba para lanzar</p>
+                    <p>Las balas se disparan automáticamente</p>
                 </div>
             </div>
         </div>
@@ -310,7 +643,7 @@
             <div class="menu-content">
                 <h2 class="menu-title glow">NIVEL COMPLETADO!</h2>
                 <p class="menu-subtitle" id="level-complete-text">Preparandote para el siguiente nivel...</p>
-                <button class="btn-primary" id="next-level-btn">CONTINUAR</button>
+                <button class="btn-menu" id="next-level-btn">CONTINUAR</button>
             </div>
         </div>
         
@@ -318,17 +651,18 @@
             <div class="menu-content">
                 <h2 class="menu-title game-over">GAME OVER</h2>
                 <p class="menu-subtitle" id="final-score">Puntuacion final: 0</p>
-                <button class="btn-primary" id="restart-btn">REINTENTAR</button>
+                <div class="menu-buttons">
+                    <button class="btn-menu" id="restart-btn">REINTENTAR</button>
+                    <button class="btn-menu" id="menu-btn">MENÚ PRINCIPAL</button>
+                </div>
             </div>
         </div>
     </div>
     
     <script>
-        // Canvas setup
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
 
-        // Responsive canvas sizing
         function resizeCanvas() {
             const container = document.querySelector(".game-container");
             const maxWidth = Math.min(800, window.innerWidth - 40);
@@ -341,13 +675,77 @@
         resizeCanvas();
         window.addEventListener("resize", resizeCanvas);
 
-        // Game state
         let gameState = "menu";
         let score = 0;
         let lives = 3;
         let level = 1;
+        let ballAttached = true;
 
-        // Paddle
+        // Settings con más opciones
+        let settings = {
+            sfxVolume: 0.5,
+            musicVolume: 0.3,
+            isMuted: false,
+            paddleSensitivity: 1.0,
+            ballSpeed: 1.0, // Multiplicador de velocidad
+            difficulty: "normal", // easy, normal, hard
+            particles: true,
+            glowIntensity: 1.0,
+            ballTrail: true,
+            colorBlindMode: false,
+            reducedMotion: false
+        };
+
+        function saveSettings() {
+            localStorage.setItem('neonBreakerSettings', JSON.stringify(settings));
+        }
+
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('neonBreakerSettings');
+            if (savedSettings) {
+                try {
+                    settings = Object.assign(settings, JSON.parse(savedSettings));
+                } catch (e) {
+                    console.log("Error loading settings:", e);
+                }
+            }
+            applySettings();
+        }
+
+        function applySettings() {
+            // Aplicar dificultad solo si no estamos en medio de un juego
+            if (gameState === "menu") {
+                switch(settings.difficulty) {
+                    case "easy":
+                        lives = 5;
+                        break;
+                    case "normal":
+                        lives = 3;
+                        break;
+                    case "hard":
+                        lives = 1;
+                        break;
+                }
+            }
+        } // Nueva variable para controlar si la bola está pegada
+
+        let highScore = parseInt(localStorage.getItem("blockBreakerHighScore")) || 0;
+
+        function updateHighScore() {
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem("blockBreakerHighScore", highScore);
+            }
+            document.getElementById("high-score-value").textContent = highScore;
+            document.getElementById("settings-high-score").textContent = highScore;
+        }
+
+        function resetHighScore() {
+            highScore = 0;
+            localStorage.setItem("blockBreakerHighScore", 0);
+            updateHighScore();
+        }
+
         const paddle = {
             width: 100,
             height: 15,
@@ -358,10 +756,8 @@
             color: "#00f5ff",
         };
 
-        // Balls array
         let balls = [];
 
-        // Ball template
         function createBall(x, y, dx = 4, dy = -4) {
             return {
                 x: x || canvas.width / 2,
@@ -374,9 +770,9 @@
             };
         }
 
-        // Bricks
         let bricks = [];
         const brickColors = ["#00f5ff", "#ff00ff", "#00ff88", "#ffaa00", "#ff0080"];
+        const brickColorsColorBlind = ["#0173B2", "#DE8F05", "#029E73", "#CC78BC", "#CA9161"]; // Colores amigables para daltónicos
         const brickRowCount = 5;
         const brickColumnCount = 8;
         const brickWidth = 70;
@@ -385,7 +781,6 @@
         const brickOffsetTop = 60;
         const brickOffsetLeft = 35;
 
-        // Power-ups
         let powerUps = [];
         const powerUpTypes = [
             { type: "enlarge", color: "#00ff88", symbol: "⬌", effect: "Paleta más grande" },
@@ -395,29 +790,36 @@
             { type: "bullets", color: "#ffd700", symbol: "🔫", effect: "Balas para disparar" },
         ];
 
-        // Bullets
         let bullets = [];
         let bulletCount = 0;
-        const maxBullets = 20;
+        const maxBullets = 50; // Más balas máximas
+        let autoShootTimer = 0;
+        const autoShootInterval = 200; // Dispara cada 200ms (mucho más rápido)
+        let shootSide = 0; // Alterna entre lado izquierdo (0) y derecho (1)
 
-        // Audio context
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
         function playSound(frequency, duration, type = "sine") {
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
+            if (settings.isMuted) return;
+            
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
 
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
 
-            oscillator.frequency.value = frequency;
-            oscillator.type = type;
+                oscillator.frequency.value = frequency;
+                oscillator.type = type;
 
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                gainNode.gain.setValueAtTime(settings.sfxVolume * 0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
 
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+            } catch (error) {
+                console.log("Error de audio:", error);
+            }
         }
 
         function playBounceSound() {
@@ -436,13 +838,13 @@
             playSound(800, 0.2, "sine");
         }
 
-        // Initialize game
         function initGame() {
             paddle.x = canvas.width / 2 - paddle.width / 2;
             paddle.y = canvas.height - 30;
             paddle.width = 100;
 
             balls = [createBall()];
+            ballAttached = true; // La bola comienza pegada
             powerUps = [];
             bullets = [];
             bulletCount = 0;
@@ -451,42 +853,221 @@
             createBricks();
         }
 
+        // Patrones de niveles
+        const levelPatterns = {
+            1: "full", // Nivel 1: Patrón completo
+            2: "pyramid", // Nivel 2: Pirámide
+            3: "checkerboard", // Nivel 3: Tablero de ajedrez
+            4: "walls", // Nivel 4: Paredes laterales
+            5: "diamond", // Nivel 5: Diamante
+            6: "cross", // Nivel 6: Cruz
+            7: "heart", // Nivel 7: Corazón
+            8: "wave", // Nivel 8: Onda
+            9: "spiral", // Nivel 9: Espiral
+            10: "fortress", // Nivel 10: Fortaleza
+        };
+
         function createBricks() {
             bricks = [];
             const cols = Math.min(
                 brickColumnCount,
                 Math.floor((canvas.width - brickOffsetLeft * 2) / (brickWidth + brickPadding)),
             );
-
+            
+            // Determinar patrón basado en el nivel
+            const patternKey = level <= 10 ? level : ((level - 1) % 10) + 1;
+            const pattern = levelPatterns[patternKey];
+            
             for (let row = 0; row < brickRowCount; row++) {
                 for (let col = 0; col < cols; col++) {
                     const brickX = brickOffsetLeft + col * (brickWidth + brickPadding);
                     const brickY = brickOffsetTop + row * (brickHeight + brickPadding);
+                    
+                    let shouldCreateBrick = true;
+                    
+                    // Aplicar patrón
+                    switch(pattern) {
+                        case "full":
+                            shouldCreateBrick = true;
+                            break;
+                            
+                        case "pyramid":
+                            const pyramidCenter = Math.floor(cols / 2);
+                            const distanceFromCenter = Math.abs(col - pyramidCenter);
+                            shouldCreateBrick = distanceFromCenter <= row;
+                            break;
+                            
+                        case "checkerboard":
+                            shouldCreateBrick = (row + col) % 2 === 0;
+                            break;
+                            
+                        case "walls":
+                            shouldCreateBrick = col < 2 || col >= cols - 2;
+                            break;
+                            
+                        case "diamond":
+                            const centerRow = Math.floor(brickRowCount / 2);
+                            const centerCol = Math.floor(cols / 2);
+                            const distRow = Math.abs(row - centerRow);
+                            const distCol = Math.abs(col - centerCol);
+                            shouldCreateBrick = (distRow + distCol) <= 3;
+                            break;
+                            
+                        case "cross":
+                            const midCol = Math.floor(cols / 2);
+                            const midRow = Math.floor(brickRowCount / 2);
+                            shouldCreateBrick = (col === midCol || col === midCol - 1) || 
+                                               (row === midRow || row === midRow - 1);
+                            break;
+                            
+                        case "heart":
+                            const hCenter = Math.floor(cols / 2);
+                            if (row === 0) {
+                                shouldCreateBrick = col === hCenter - 2 || col === hCenter - 1 || 
+                                                   col === hCenter + 1 || col === hCenter + 2;
+                            } else if (row === 1) {
+                                shouldCreateBrick = col >= hCenter - 3 && col <= hCenter + 3;
+                            } else if (row === 2) {
+                                shouldCreateBrick = col >= hCenter - 3 && col <= hCenter + 3;
+                            } else if (row === 3) {
+                                shouldCreateBrick = col >= hCenter - 2 && col <= hCenter + 2;
+                            } else if (row === 4) {
+                                shouldCreateBrick = col >= hCenter - 1 && col <= hCenter + 1;
+                            }
+                            break;
+                            
+                        case "wave":
+                            const waveOffset = Math.floor(Math.sin(col * 0.8) * 1.5 + 2.5);
+                            shouldCreateBrick = row === waveOffset || row === waveOffset + 1;
+                            break;
+                            
+                        case "spiral":
+                            const spiralPattern = [
+                                [1,1,1,1,1,1,1,1],
+                                [0,0,0,0,0,0,0,1],
+                                [0,1,1,1,1,1,0,1],
+                                [0,1,0,0,0,1,0,1],
+                                [0,1,1,1,1,1,0,1]
+                            ];
+                            shouldCreateBrick = spiralPattern[row] && spiralPattern[row][col] === 1;
+                            break;
+                            
+                        case "fortress":
+                            if (row === 0) {
+                                shouldCreateBrick = true;
+                            } else if (row === 1 || row === 2) {
+                                shouldCreateBrick = col === 0 || col === cols - 1 || col === Math.floor(cols / 2);
+                            } else {
+                                shouldCreateBrick = col === 0 || col === cols - 1;
+                            }
+                            break;
+                    }
 
-                    bricks.push({
-                        x: brickX,
-                        y: brickY,
-                        width: brickWidth,
-                        height: brickHeight,
-                        color: brickColors[row % brickColors.length],
-                        visible: true,
-                        hasPowerUp: Math.random() < 0.15,
-                    });
+                    if (shouldCreateBrick) {
+                        const colors = settings.colorBlindMode ? brickColorsColorBlind : brickColors;
+                        bricks.push({
+                            x: brickX,
+                            y: brickY,
+                            width: brickWidth,
+                            height: brickHeight,
+                            color: colors[row % colors.length],
+                            visible: true,
+                            hasPowerUp: Math.random() < 0.25,
+                        });
+                    }
                 }
             }
         }
 
-        // Drawing functions
         function drawPaddle() {
             ctx.shadowBlur = 20;
             ctx.shadowColor = paddle.color;
             ctx.fillStyle = paddle.color;
             ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
             ctx.shadowBlur = 0;
+
+            // Dibujar cañones cuando hay balas
+            if (bulletCount > 0) {
+                ctx.fillStyle = "#ffd700";
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = "#ffd700";
+                
+                // Cañón izquierdo
+                ctx.fillRect(paddle.x + 5, paddle.y - 8, 6, 8);
+                
+                // Cañón derecho
+                ctx.fillRect(paddle.x + paddle.width - 11, paddle.y - 8, 6, 8);
+                
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        // Trail de la bola
+        let ballTrails = [];
+
+        // Partículas
+        let particles = [];
+
+        function createParticles(x, y, color) {
+            if (!settings.particles || settings.reducedMotion) return;
+            
+            for (let i = 0; i < 8; i++) {
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: (Math.random() - 0.5) * 6,
+                    life: 1,
+                    color: color
+                });
+            }
+        }
+
+        function updateParticles() {
+            particles.forEach((particle, index) => {
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+                particle.life -= 0.02;
+                
+                if (particle.life <= 0) {
+                    particles.splice(index, 1);
+                }
+            });
+        }
+
+        function drawParticles() {
+            particles.forEach(particle => {
+                ctx.globalAlpha = particle.life;
+                ctx.fillStyle = particle.color;
+                ctx.fillRect(particle.x, particle.y, 4, 4);
+            });
+            ctx.globalAlpha = 1;
         }
 
         function drawBall(ball) {
-            ctx.shadowBlur = 15;
+            // Dibujar trail si está activado
+            if (settings.ballTrail && !ballAttached) {
+                ballTrails.push({ x: ball.x, y: ball.y, alpha: 1 });
+                if (ballTrails.length > 10) ballTrails.shift();
+
+                ballTrails.forEach((trail, index) => {
+                    trail.alpha -= 0.1;
+                    if (trail.alpha > 0) {
+                        ctx.globalAlpha = trail.alpha * 0.5;
+                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = ball.color;
+                        ctx.beginPath();
+                        ctx.arc(trail.x, trail.y, ball.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = ball.color;
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+                });
+                ctx.globalAlpha = 1;
+            }
+
+            const glowAmount = settings.reducedMotion ? 5 : 15 * settings.glowIntensity;
+            ctx.shadowBlur = glowAmount;
             ctx.shadowColor = ball.color;
             ctx.beginPath();
             ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
@@ -499,7 +1080,8 @@
         function drawBricks() {
             bricks.forEach((brick) => {
                 if (brick.visible) {
-                    ctx.shadowBlur = 10;
+                    const glowAmount = settings.reducedMotion ? 3 : 10 * settings.glowIntensity;
+                    ctx.shadowBlur = glowAmount;
                     ctx.shadowColor = brick.color;
                     ctx.fillStyle = brick.color;
                     ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
@@ -514,13 +1096,14 @@
 
         function drawPowerUps() {
             powerUps.forEach((powerUp) => {
-                ctx.shadowBlur = 15;
+                const glowAmount = settings.reducedMotion ? 5 : 15 * settings.glowIntensity;
+                ctx.shadowBlur = glowAmount;
                 ctx.shadowColor = powerUp.color;
                 ctx.fillStyle = powerUp.color;
                 ctx.fillRect(powerUp.x, powerUp.y, powerUp.size, powerUp.size);
 
-                ctx.fillStyle = "#000";
-                ctx.font = "bold 16px Arial";
+                ctx.fillStyle = "#fff";
+                ctx.font = "bold 20px Arial";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
                 ctx.fillText(powerUp.symbol, powerUp.x + powerUp.size / 2, powerUp.y + powerUp.size / 2);
@@ -531,15 +1114,22 @@
 
         function drawBullets() {
             bullets.forEach((bullet) => {
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = 15;
                 ctx.shadowColor = "#ffd700";
                 ctx.fillStyle = "#ffd700";
-                ctx.fillRect(bullet.x - 2, bullet.y, 4, 12);
+                
+                // Bala más grande y visible
+                ctx.beginPath();
+                ctx.arc(bullet.x, bullet.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Trazo de la bala
+                ctx.fillRect(bullet.x - 1.5, bullet.y, 3, 10);
+                
                 ctx.shadowBlur = 0;
             });
         }
 
-        // Movement functions
         function movePaddle() {
             paddle.x += paddle.dx;
 
@@ -548,6 +1138,13 @@
         }
 
         function moveBall(ball) {
+            // Si la bola está pegada, moverla con la paleta
+            if (ballAttached && balls[0] === ball) {
+                ball.x = paddle.x + paddle.width / 2;
+                ball.y = paddle.y - ball.radius - 2;
+                return true;
+            }
+
             ball.x += ball.dx;
             ball.y += ball.dy;
 
@@ -604,13 +1201,11 @@
             bullets.forEach((bullet, bulletIndex) => {
                 bullet.y -= bullet.speed;
 
-                // Remove bullets that go off screen
                 if (bullet.y < 0) {
                     bullets.splice(bulletIndex, 1);
                     return;
                 }
 
-                // Check collision with bricks
                 bricks.forEach((brick) => {
                     if (brick.visible) {
                         if (
@@ -624,6 +1219,9 @@
                             score += 10 * level;
                             updateDisplay();
                             playBrickSound();
+                            
+                            // Crear partículas al romper bloque con bala
+                            createParticles(brick.x + brick.width / 2, brick.y + brick.height / 2, brick.color);
 
                             if (brick.hasPowerUp) {
                                 const powerUpType = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
@@ -643,7 +1241,6 @@
             });
         }
 
-        // Collision detection
         function detectBrickCollision() {
             balls.forEach((ball) => {
                 bricks.forEach((brick) => {
@@ -659,6 +1256,9 @@
                             score += 10 * level;
                             updateDisplay();
                             playBrickSound();
+                            
+                            // Crear partículas al romper bloque
+                            createParticles(brick.x + brick.width / 2, brick.y + brick.height / 2, brick.color);
 
                             if (brick.hasPowerUp) {
                                 const powerUpType = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
@@ -678,11 +1278,11 @@
             });
         }
 
-        // Update display
         function updateDisplay() {
             document.getElementById("score-display").textContent = score;
             document.getElementById("lives-display").textContent = lives;
             document.getElementById("level-display").textContent = level;
+            updateHighScore();
         }
 
         function updateBulletDisplay() {
@@ -697,12 +1297,10 @@
             }
         }
 
-        // Check win condition
         function checkWin() {
             return bricks.every((brick) => !brick.visible);
         }
 
-        // Game loop
         function gameLoop() {
             if (gameState !== "playing") return;
 
@@ -717,6 +1315,7 @@
             movePaddle();
             movePowerUps();
             moveBullets();
+            autoShoot(); // Disparar automáticamente
 
             balls = balls.filter((ball) => moveBall(ball));
 
@@ -730,6 +1329,7 @@
                     showGameOver();
                 } else {
                     balls = [createBall()];
+                    ballAttached = true; // Pegar la bola de nuevo cuando pierde una vida
                 }
             }
 
@@ -743,7 +1343,6 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // Menu functions
         function showMenu(menuId) {
             document.querySelectorAll(".menu-overlay").forEach((menu) => {
                 menu.classList.add("hidden");
@@ -758,16 +1357,41 @@
         }
 
         function showLevelComplete() {
-            document.getElementById("level-complete-text").textContent = `Has completado el nivel ${level}! Puntuacion: ${score}`;
+            const patternKey = (level % 10) + 1;
+            const patternNames = {
+                1: "Completo",
+                2: "Pirámide",
+                3: "Tablero de Ajedrez",
+                4: "Paredes",
+                5: "Diamante",
+                6: "Cruz",
+                7: "Corazón",
+                8: "Onda",
+                9: "Espiral",
+                10: "Fortaleza"
+            };
+            const nextPattern = patternNames[patternKey] || "Especial";
+            
+            document.getElementById("level-complete-text").textContent = 
+                `¡Has completado el nivel ${level}! Puntuación: ${score}\nSiguiente patrón: ${nextPattern}`;
             showMenu("level-complete-menu");
         }
 
         function showGameOver() {
             document.getElementById("final-score").textContent = `Puntuacion final: ${score}`;
+            updateHighScore();
             showMenu("game-over-menu");
         }
 
         function startGame() {
+            try {
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+            } catch (e) {
+                console.log("Audio context error:", e);
+            }
+            
             hideAllMenus();
             gameState = "playing";
             initGame();
@@ -788,6 +1412,7 @@
 
             paddle.x = canvas.width / 2 - paddle.width / 2;
             balls = [createBall()];
+            ballAttached = true; // Pegar la bola al inicio del nuevo nivel
             powerUps = [];
             createBricks();
 
@@ -801,77 +1426,139 @@
             startGame();
         }
 
-        // Event listeners
+        // Función para lanzar la bola
+        function launchBall() {
+            if (ballAttached && balls.length > 0) {
+                const speedMultiplier = settings.ballSpeed;
+                balls[0].dx = 4 * speedMultiplier;
+                balls[0].dy = -4 * speedMultiplier;
+                ballAttached = false;
+                playBounceSound();
+            }
+        }
+
         document.getElementById("start-btn").addEventListener("click", startGame);
         document.getElementById("next-level-btn").addEventListener("click", nextLevel);
         document.getElementById("restart-btn").addEventListener("click", restartGame);
 
-        // Keyboard controls
-        document.addEventListener("keydown", (e) => {
-            if (gameState !== "playing") return;
+        document.getElementById("settings-btn").addEventListener("click", () => {
+            const settingsPanel = document.getElementById("settings-panel");
+            settingsPanel.classList.toggle("hidden");
+            document.getElementById("settings-level").textContent = level;
+            updateHighScore();
+        });
 
-            if (e.key === "ArrowLeft" || e.key === "Left") {
-                paddle.dx = -paddle.speed;
-            } else if (e.key === "ArrowRight" || e.key === "Right") {
-                paddle.dx = paddle.speed;
-            } else if (e.key === " " || e.key === "Spacebar") {
-                e.preventDefault();
-                shootBullet();
+        document.getElementById("reset-high-score-btn").addEventListener("click", () => {
+            if (confirm("¿Estás seguro de que quieres reiniciar el puntaje más alto?")) {
+                resetHighScore();
             }
         });
 
-        document.addEventListener("keyup", (e) => {
-            if (e.key === "ArrowLeft" || e.key === "Left" || e.key === "ArrowRight" || e.key === "Right") {
-                paddle.dx = 0;
-            }
+        document.getElementById("menu-btn").addEventListener("click", () => {
+            score = 0;
+            lives = 3;
+            level = 1;
+            gameState = "menu";
+            initGame();
+            updateDisplay();
+            showMenu("start-menu");
         });
 
-        // Touch controls
-        let touchStartX = 0;
-        let touchCurrentX = 0;
-        let touchStartY = 0;
-
-        canvas.addEventListener("touchstart", (e) => {
-            if (gameState !== "playing") return;
-            touchStartX = e.touches[0].clientX;
-            touchCurrentX = touchStartX;
-            touchStartY = e.touches[0].clientY;
-        });
-
-        canvas.addEventListener("touchmove", (e) => {
-            if (gameState !== "playing") return;
-            e.preventDefault();
-
-            touchCurrentX = e.touches[0].clientX;
-            const deltaX = touchCurrentX - touchStartX;
-
-            paddle.x += deltaX * 0.5;
-
-            if (paddle.x < 0) paddle.x = 0;
-            if (paddle.x + paddle.width > canvas.width) paddle.x = canvas.width - paddle.width;
-
-            touchStartX = touchCurrentX;
-        });
-
-        canvas.addEventListener("touchend", () => {
-            paddle.dx = 0;
-        });
-
-        canvas.addEventListener("touchend", (e) => {
-            if (gameState !== "playing") return;
-            
-            const touchEndY = e.changedTouches[0].clientY;
-            const deltaY = touchStartY - touchEndY;
-            
-            if (deltaY > 30) {
-                shootBullet();
-            }
-        });
-
-        // Initialize display
         updateDisplay();
+        updateHighScore();
+        loadSettings();
 
-        // Apply power-up
+        // Event listeners para configuraciones
+        document.getElementById('sfx-volume').addEventListener('input', (e) => {
+            settings.sfxVolume = parseFloat(e.target.value);
+            saveSettings();
+        });
+
+        document.getElementById('music-volume').addEventListener('input', (e) => {
+            settings.musicVolume = parseFloat(e.target.value);
+            saveSettings();
+        });
+
+        document.getElementById('mute-all').addEventListener('change', (e) => {
+            settings.isMuted = e.target.checked;
+            saveSettings();
+        });
+
+        document.getElementById('paddle-sensitivity').addEventListener('input', (e) => {
+            settings.paddleSensitivity = parseFloat(e.target.value);
+            saveSettings();
+        });
+
+        document.getElementById('ball-speed').addEventListener('change', (e) => {
+            settings.ballSpeed = parseFloat(e.target.value);
+            saveSettings();
+        });
+
+        document.getElementById('difficulty').addEventListener('change', (e) => {
+            settings.difficulty = e.target.value;
+            applySettings();
+            saveSettings();
+            updateDisplay();
+        });
+
+        document.getElementById('glow-intensity').addEventListener('change', (e) => {
+            settings.glowIntensity = parseFloat(e.target.value);
+            saveSettings();
+        });
+
+        document.getElementById('ball-trail').addEventListener('change', (e) => {
+            settings.ballTrail = e.target.checked;
+            if (!e.target.checked) {
+                ballTrails = [];
+            }
+            saveSettings();
+        });
+
+        document.getElementById('particles').addEventListener('change', (e) => {
+            settings.particles = e.target.checked;
+            if (!e.target.checked) {
+                particles = [];
+            }
+            saveSettings();
+        });
+
+        document.getElementById('colorblind-mode').addEventListener('change', (e) => {
+            settings.colorBlindMode = e.target.checked;
+            saveSettings();
+            if (gameState === "playing") {
+                createBricks();
+            }
+        });
+
+        document.getElementById('reduced-motion').addEventListener('change', (e) => {
+            settings.reducedMotion = e.target.checked;
+            saveSettings();
+        });
+
+        // Tabs de configuración
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.getAttribute('data-tab');
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(`tab-${tabName}`).classList.add('active');
+            });
+        });
+
+        // Cargar valores guardados en los controles
+        document.getElementById('sfx-volume').value = settings.sfxVolume;
+        document.getElementById('music-volume').value = settings.musicVolume;
+        document.getElementById('mute-all').checked = settings.isMuted;
+        document.getElementById('paddle-sensitivity').value = settings.paddleSensitivity;
+        document.getElementById('ball-speed').value = settings.ballSpeed;
+        document.getElementById('difficulty').value = settings.difficulty;
+        document.getElementById('glow-intensity').value = settings.glowIntensity;
+        document.getElementById('ball-trail').checked = settings.ballTrail;
+        document.getElementById('particles').checked = settings.particles;
+        document.getElementById('colorblind-mode').checked = settings.colorBlindMode;
+        document.getElementById('reduced-motion').checked = settings.reducedMotion;
+
         function applyPowerUp(type) {
             switch (type) {
                 case "enlarge":
@@ -909,25 +1596,106 @@
                     }, 8000);
                     break;
                 case "bullets":
-                    bulletCount = Math.min(maxBullets, bulletCount + 10);
+                    bulletCount = Math.min(maxBullets, bulletCount + 20); // Más balas por power-up
                     updateBulletDisplay();
                     break;
             }
         }
 
-        // Shoot bullet
         function shootBullet() {
             if (bulletCount > 0 && gameState === "playing") {
+                // Alternar entre lado izquierdo y derecho
+                const bulletX = shootSide === 0 
+                    ? paddle.x + 8  // Izquierda
+                    : paddle.x + paddle.width - 8; // Derecha
+                
                 bullets.push({
-                    x: paddle.x + paddle.width / 2,
-                    y: paddle.y,
-                    speed: 8,
+                    x: bulletX,
+                    y: paddle.y - 5,
+                    speed: 10, // Más rápido
                 });
+                
+                shootSide = 1 - shootSide; // Alterna entre 0 y 1
                 bulletCount--;
                 updateBulletDisplay();
-                playSound(1000, 0.1, "square");
+                playSound(1200, 0.05, "square"); // Sonido más corto y agudo
             }
         }
+
+        // Disparo automático
+        function autoShoot() {
+            const currentTime = Date.now();
+            if (bulletCount > 0 && gameState === "playing" && currentTime - autoShootTimer >= autoShootInterval) {
+                shootBullet();
+                autoShootTimer = currentTime;
+            }
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (gameState !== "playing") return;
+
+            if (e.key === "ArrowLeft" || e.key === "Left") {
+                paddle.dx = -paddle.speed;
+            } else if (e.key === "ArrowRight" || e.key === "Right") {
+                paddle.dx = paddle.speed;
+            } else if (e.key === "ArrowUp" || e.key === "Up") {
+                e.preventDefault();
+                if (ballAttached) {
+                    launchBall();
+                }
+            } else if (e.key === " " || e.key === "Spacebar") {
+                e.preventDefault();
+                if (ballAttached) {
+                    launchBall();
+                }
+                // Se eliminó el disparo manual con espacio, ahora es automático
+            }
+        });
+
+        document.addEventListener("keyup", (e) => {
+            if (e.key === "ArrowLeft" || e.key === "Left" || e.key === "ArrowRight" || e.key === "Right") {
+                paddle.dx = 0;
+            }
+        });
+
+        let touchStartX = 0;
+        let touchCurrentX = 0;
+        let touchStartY = 0;
+
+        canvas.addEventListener("touchstart", (e) => {
+            if (gameState !== "playing") return;
+            touchStartX = e.touches[0].clientX;
+            touchCurrentX = touchStartX;
+            touchStartY = e.touches[0].clientY;
+        });
+
+        canvas.addEventListener("touchmove", (e) => {
+            if (gameState !== "playing") return;
+            e.preventDefault();
+
+            touchCurrentX = e.touches[0].clientX;
+            const deltaX = touchCurrentX - touchStartX;
+
+            paddle.x += deltaX * 0.5;
+
+            if (paddle.x < 0) paddle.x = 0;
+            if (paddle.x + paddle.width > canvas.width) paddle.x = canvas.width - paddle.width;
+
+            touchStartX = touchCurrentX;
+        });
+
+        canvas.addEventListener("touchend", (e) => {
+            if (gameState !== "playing") return;
+            paddle.dx = 0;
+            
+            const touchEndY = e.changedTouches[0].clientY;
+            const deltaY = touchStartY - touchEndY;
+            
+            // Solo lanza la bola si está pegada, los disparos son automáticos
+            if (deltaY > 30 && ballAttached) {
+                launchBall();
+            }
+        });
     </script>
 </body>
 </html>
