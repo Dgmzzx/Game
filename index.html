@@ -519,8 +519,19 @@
                     <button class="btn-menu" id="start-btn">JUGAR</button>
                     <button class="btn-menu" id="settings-btn">CONFIGURACIÓN</button>
                 </div>
-                <div class="settings-menu hidden" id="settings-panel">
-                    <h3>CONFIGURACIÓN</h3>
+                <div class="controls-info">
+                    <p>PC: Flechas ← → para mover</p>
+                    <p>Lanzar bola: Flecha ↑ / Espacio</p>
+                    <p>Móvil: Desliza para mover / Toca arriba para lanzar</p>
+                    <p>Las balas se disparan automáticamente</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-overlay hidden" id="settings-menu">
+            <div class="menu-content">
+                <h2 class="menu-title">CONFIGURACIÓN</h2>
+                <div class="settings-menu">
                     <div class="settings-tabs">
                         <button class="tab-btn active" data-tab="audio">Audio</button>
                         <button class="tab-btn" data-tab="gameplay">Jugabilidad</button>
@@ -630,11 +641,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="controls-info">
-                    <p>PC: Flechas ← → para mover</p>
-                    <p>Lanzar bola: Flecha ↑ / Espacio</p>
-                    <p>Móvil: Desliza para mover / Toca arriba para lanzar</p>
-                    <p>Las balas se disparan automáticamente</p>
+                <div class="menu-buttons">
+                    <button class="btn-menu" id="back-to-menu-btn">VOLVER AL MENÚ</button>
                 </div>
             </div>
         </div>
@@ -681,14 +689,13 @@
         let level = 1;
         let ballAttached = true;
 
-        // Settings con más opciones
         let settings = {
             sfxVolume: 0.5,
             musicVolume: 0.3,
             isMuted: false,
             paddleSensitivity: 1.0,
-            ballSpeed: 1.0, // Multiplicador de velocidad
-            difficulty: "normal", // easy, normal, hard
+            ballSpeed: 1.0,
+            difficulty: "normal",
             particles: true,
             glowIntensity: 1.0,
             ballTrail: true,
@@ -713,7 +720,6 @@
         }
 
         function applySettings() {
-            // Aplicar dificultad solo si no estamos en medio de un juego
             if (gameState === "menu") {
                 switch(settings.difficulty) {
                     case "easy":
@@ -727,7 +733,7 @@
                         break;
                 }
             }
-        } // Nueva variable para controlar si la bola está pegada
+        }
 
         let highScore = parseInt(localStorage.getItem("blockBreakerHighScore")) || 0;
 
@@ -772,7 +778,7 @@
 
         let bricks = [];
         const brickColors = ["#00f5ff", "#ff00ff", "#00ff88", "#ffaa00", "#ff0080"];
-        const brickColorsColorBlind = ["#0173B2", "#DE8F05", "#029E73", "#CC78BC", "#CA9161"]; // Colores amigables para daltónicos
+        const brickColorsColorBlind = ["#0173B2", "#DE8F05", "#029E73", "#CC78BC", "#CA9161"];
         const brickRowCount = 5;
         const brickColumnCount = 8;
         const brickWidth = 70;
@@ -792,10 +798,10 @@
 
         let bullets = [];
         let bulletCount = 0;
-        const maxBullets = 50; // Más balas máximas
+        const maxBullets = 50;
         let autoShootTimer = 0;
-        const autoShootInterval = 200; // Dispara cada 200ms (mucho más rápido)
-        let shootSide = 0; // Alterna entre lado izquierdo (0) y derecho (1)
+        const autoShootInterval = 200;
+        let shootSide = 0;
 
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -844,7 +850,7 @@
             paddle.width = 100;
 
             balls = [createBall()];
-            ballAttached = true; // La bola comienza pegada
+            ballAttached = true;
             powerUps = [];
             bullets = [];
             bulletCount = 0;
@@ -853,18 +859,17 @@
             createBricks();
         }
 
-        // Patrones de niveles
         const levelPatterns = {
-            1: "full", // Nivel 1: Patrón completo
-            2: "pyramid", // Nivel 2: Pirámide
-            3: "checkerboard", // Nivel 3: Tablero de ajedrez
-            4: "walls", // Nivel 4: Paredes laterales
-            5: "diamond", // Nivel 5: Diamante
-            6: "cross", // Nivel 6: Cruz
-            7: "heart", // Nivel 7: Corazón
-            8: "wave", // Nivel 8: Onda
-            9: "spiral", // Nivel 9: Espiral
-            10: "fortress", // Nivel 10: Fortaleza
+            1: "full",
+            2: "pyramid",
+            3: "checkerboard",
+            4: "walls",
+            5: "diamond",
+            6: "cross",
+            7: "heart",
+            8: "wave",
+            9: "spiral",
+            10: "fortress",
         };
 
         function createBricks() {
@@ -874,7 +879,6 @@
                 Math.floor((canvas.width - brickOffsetLeft * 2) / (brickWidth + brickPadding)),
             );
             
-            // Determinar patrón basado en el nivel
             const patternKey = level <= 10 ? level : ((level - 1) % 10) + 1;
             const pattern = levelPatterns[patternKey];
             
@@ -885,7 +889,6 @@
                     
                     let shouldCreateBrick = true;
                     
-                    // Aplicar patrón
                     switch(pattern) {
                         case "full":
                             shouldCreateBrick = true;
@@ -980,32 +983,26 @@
         }
 
         function drawPaddle() {
-            ctx.shadowBlur = 20;
+            const glowAmount = settings.reducedMotion ? 5 : 20 * settings.glowIntensity;
+            ctx.shadowBlur = glowAmount;
             ctx.shadowColor = paddle.color;
             ctx.fillStyle = paddle.color;
             ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
             ctx.shadowBlur = 0;
 
-            // Dibujar cañones cuando hay balas
             if (bulletCount > 0) {
                 ctx.fillStyle = "#ffd700";
-                ctx.shadowBlur = 15;
+                ctx.shadowBlur = settings.reducedMotion ? 5 : 15;
                 ctx.shadowColor = "#ffd700";
                 
-                // Cañón izquierdo
                 ctx.fillRect(paddle.x + 5, paddle.y - 8, 6, 8);
-                
-                // Cañón derecho
                 ctx.fillRect(paddle.x + paddle.width - 11, paddle.y - 8, 6, 8);
                 
                 ctx.shadowBlur = 0;
             }
         }
 
-        // Trail de la bola
         let ballTrails = [];
-
-        // Partículas
         let particles = [];
 
         function createParticles(x, y, color) {
@@ -1045,7 +1042,6 @@
         }
 
         function drawBall(ball) {
-            // Dibujar trail si está activado
             if (settings.ballTrail && !ballAttached) {
                 ballTrails.push({ x: ball.x, y: ball.y, alpha: 1 });
                 if (ballTrails.length > 10) ballTrails.shift();
@@ -1118,12 +1114,10 @@
                 ctx.shadowColor = "#ffd700";
                 ctx.fillStyle = "#ffd700";
                 
-                // Bala más grande y visible
                 ctx.beginPath();
                 ctx.arc(bullet.x, bullet.y, 3, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // Trazo de la bala
                 ctx.fillRect(bullet.x - 1.5, bullet.y, 3, 10);
                 
                 ctx.shadowBlur = 0;
@@ -1138,7 +1132,6 @@
         }
 
         function moveBall(ball) {
-            // Si la bola está pegada, moverla con la paleta
             if (ballAttached && balls[0] === ball) {
                 ball.x = paddle.x + paddle.width / 2;
                 ball.y = paddle.y - ball.radius - 2;
@@ -1220,7 +1213,6 @@
                             updateDisplay();
                             playBrickSound();
                             
-                            // Crear partículas al romper bloque con bala
                             createParticles(brick.x + brick.width / 2, brick.y + brick.height / 2, brick.color);
 
                             if (brick.hasPowerUp) {
@@ -1257,7 +1249,6 @@
                             updateDisplay();
                             playBrickSound();
                             
-                            // Crear partículas al romper bloque
                             createParticles(brick.x + brick.width / 2, brick.y + brick.height / 2, brick.color);
 
                             if (brick.hasPowerUp) {
@@ -1311,11 +1302,13 @@
             balls.forEach((ball) => drawBall(ball));
             drawPowerUps();
             drawBullets();
+            drawParticles();
 
             movePaddle();
             movePowerUps();
             moveBullets();
-            autoShoot(); // Disparar automáticamente
+            autoShoot();
+            updateParticles();
 
             balls = balls.filter((ball) => moveBall(ball));
 
@@ -1329,7 +1322,7 @@
                     showGameOver();
                 } else {
                     balls = [createBall()];
-                    ballAttached = true; // Pegar la bola de nuevo cuando pierde una vida
+                    ballAttached = true;
                 }
             }
 
@@ -1412,7 +1405,7 @@
 
             paddle.x = canvas.width / 2 - paddle.width / 2;
             balls = [createBall()];
-            ballAttached = true; // Pegar la bola al inicio del nuevo nivel
+            ballAttached = true;
             powerUps = [];
             createBricks();
 
@@ -1426,7 +1419,6 @@
             startGame();
         }
 
-        // Función para lanzar la bola
         function launchBall() {
             if (ballAttached && balls.length > 0) {
                 const speedMultiplier = settings.ballSpeed;
@@ -1437,15 +1429,88 @@
             }
         }
 
+        function applyPowerUp(type) {
+            switch (type) {
+                case "enlarge":
+                    paddle.width = Math.min(150, paddle.width + 30);
+                    setTimeout(() => {
+                        paddle.width = Math.max(100, paddle.width - 30);
+                    }, 10000);
+                    break;
+                case "multiball":
+                    if (balls.length < 5) {
+                        const mainBall = balls[0];
+                        balls.push(createBall(mainBall.x, mainBall.y, -mainBall.dx, mainBall.dy));
+                        balls.push(createBall(mainBall.x, mainBall.y, mainBall.dx * 1.2, mainBall.dy));
+                    }
+                    break;
+                case "speed":
+                    balls.forEach((ball) => {
+                        ball.dx *= 1.3;
+                        ball.dy *= 1.3;
+                    });
+                    setTimeout(() => {
+                        balls.forEach((ball) => {
+                            ball.dx /= 1.3;
+                            ball.dy /= 1.3;
+                        });
+                    }, 8000);
+                    break;
+                case "shrink":
+                    paddle.width = Math.max(60, paddle.width - 20);
+                    lives = Math.max(0, lives - 1);
+                    updateDisplay();
+                    playLoseLifeSound();
+                    setTimeout(() => {
+                        paddle.width = Math.min(100, paddle.width + 20);
+                    }, 8000);
+                    break;
+                case "bullets":
+                    bulletCount = Math.min(maxBullets, bulletCount + 20);
+                    updateBulletDisplay();
+                    break;
+            }
+        }
+
+        function shootBullet() {
+            if (bulletCount > 0 && gameState === "playing") {
+                const bulletX = shootSide === 0 
+                    ? paddle.x + 8
+                    : paddle.x + paddle.width - 8;
+                
+                bullets.push({
+                    x: bulletX,
+                    y: paddle.y - 5,
+                    speed: 10,
+                });
+                
+                shootSide = 1 - shootSide;
+                bulletCount--;
+                updateBulletDisplay();
+                playSound(1200, 0.05, "square");
+            }
+        }
+
+        function autoShoot() {
+            const currentTime = Date.now();
+            if (bulletCount > 0 && gameState === "playing" && currentTime - autoShootTimer >= autoShootInterval) {
+                shootBullet();
+                autoShootTimer = currentTime;
+            }
+        }
+
         document.getElementById("start-btn").addEventListener("click", startGame);
         document.getElementById("next-level-btn").addEventListener("click", nextLevel);
         document.getElementById("restart-btn").addEventListener("click", restartGame);
 
         document.getElementById("settings-btn").addEventListener("click", () => {
-            const settingsPanel = document.getElementById("settings-panel");
-            settingsPanel.classList.toggle("hidden");
             document.getElementById("settings-level").textContent = level;
             updateHighScore();
+            showMenu("settings-menu");
+        });
+
+        document.getElementById("back-to-menu-btn").addEventListener("click", () => {
+            showMenu("start-menu");
         });
 
         document.getElementById("reset-high-score-btn").addEventListener("click", () => {
@@ -1464,11 +1529,6 @@
             showMenu("start-menu");
         });
 
-        updateDisplay();
-        updateHighScore();
-        loadSettings();
-
-        // Event listeners para configuraciones
         document.getElementById('sfx-volume').addEventListener('input', (e) => {
             settings.sfxVolume = parseFloat(e.target.value);
             saveSettings();
@@ -1535,7 +1595,6 @@
             saveSettings();
         });
 
-        // Tabs de configuración
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabName = btn.getAttribute('data-tab');
@@ -1546,98 +1605,13 @@
             });
         });
 
-        // Cargar valores guardados en los controles
-        document.getElementById('sfx-volume').value = settings.sfxVolume;
-        document.getElementById('music-volume').value = settings.musicVolume;
-        document.getElementById('mute-all').checked = settings.isMuted;
-        document.getElementById('paddle-sensitivity').value = settings.paddleSensitivity;
-        document.getElementById('ball-speed').value = settings.ballSpeed;
-        document.getElementById('difficulty').value = settings.difficulty;
-        document.getElementById('glow-intensity').value = settings.glowIntensity;
-        document.getElementById('ball-trail').checked = settings.ballTrail;
-        document.getElementById('particles').checked = settings.particles;
-        document.getElementById('colorblind-mode').checked = settings.colorBlindMode;
-        document.getElementById('reduced-motion').checked = settings.reducedMotion;
-
-        function applyPowerUp(type) {
-            switch (type) {
-                case "enlarge":
-                    paddle.width = Math.min(150, paddle.width + 30);
-                    setTimeout(() => {
-                        paddle.width = Math.max(100, paddle.width - 30);
-                    }, 10000);
-                    break;
-                case "multiball":
-                    if (balls.length < 5) {
-                        const mainBall = balls[0];
-                        balls.push(createBall(mainBall.x, mainBall.y, -mainBall.dx, mainBall.dy));
-                        balls.push(createBall(mainBall.x, mainBall.y, mainBall.dx * 1.2, mainBall.dy));
-                    }
-                    break;
-                case "speed":
-                    balls.forEach((ball) => {
-                        ball.dx *= 1.3;
-                        ball.dy *= 1.3;
-                    });
-                    setTimeout(() => {
-                        balls.forEach((ball) => {
-                            ball.dx /= 1.3;
-                            ball.dy /= 1.3;
-                        });
-                    }, 8000);
-                    break;
-                case "shrink":
-                    paddle.width = Math.max(60, paddle.width - 20);
-                    lives = Math.max(0, lives - 1);
-                    updateDisplay();
-                    playLoseLifeSound();
-                    setTimeout(() => {
-                        paddle.width = Math.min(100, paddle.width + 20);
-                    }, 8000);
-                    break;
-                case "bullets":
-                    bulletCount = Math.min(maxBullets, bulletCount + 20); // Más balas por power-up
-                    updateBulletDisplay();
-                    break;
-            }
-        }
-
-        function shootBullet() {
-            if (bulletCount > 0 && gameState === "playing") {
-                // Alternar entre lado izquierdo y derecho
-                const bulletX = shootSide === 0 
-                    ? paddle.x + 8  // Izquierda
-                    : paddle.x + paddle.width - 8; // Derecha
-                
-                bullets.push({
-                    x: bulletX,
-                    y: paddle.y - 5,
-                    speed: 10, // Más rápido
-                });
-                
-                shootSide = 1 - shootSide; // Alterna entre 0 y 1
-                bulletCount--;
-                updateBulletDisplay();
-                playSound(1200, 0.05, "square"); // Sonido más corto y agudo
-            }
-        }
-
-        // Disparo automático
-        function autoShoot() {
-            const currentTime = Date.now();
-            if (bulletCount > 0 && gameState === "playing" && currentTime - autoShootTimer >= autoShootInterval) {
-                shootBullet();
-                autoShootTimer = currentTime;
-            }
-        }
-
         document.addEventListener("keydown", (e) => {
             if (gameState !== "playing") return;
 
             if (e.key === "ArrowLeft" || e.key === "Left") {
-                paddle.dx = -paddle.speed;
+                paddle.dx = -paddle.speed * settings.paddleSensitivity;
             } else if (e.key === "ArrowRight" || e.key === "Right") {
-                paddle.dx = paddle.speed;
+                paddle.dx = paddle.speed * settings.paddleSensitivity;
             } else if (e.key === "ArrowUp" || e.key === "Up") {
                 e.preventDefault();
                 if (ballAttached) {
@@ -1648,7 +1622,6 @@
                 if (ballAttached) {
                     launchBall();
                 }
-                // Se eliminó el disparo manual con espacio, ahora es automático
             }
         });
 
@@ -1691,11 +1664,26 @@
             const touchEndY = e.changedTouches[0].clientY;
             const deltaY = touchStartY - touchEndY;
             
-            // Solo lanza la bola si está pegada, los disparos son automáticos
             if (deltaY > 30 && ballAttached) {
                 launchBall();
             }
         });
+
+        updateDisplay();
+        updateHighScore();
+        loadSettings();
+
+        document.getElementById('sfx-volume').value = settings.sfxVolume;
+        document.getElementById('music-volume').value = settings.musicVolume;
+        document.getElementById('mute-all').checked = settings.isMuted;
+        document.getElementById('paddle-sensitivity').value = settings.paddleSensitivity;
+        document.getElementById('ball-speed').value = settings.ballSpeed;
+        document.getElementById('difficulty').value = settings.difficulty;
+        document.getElementById('glow-intensity').value = settings.glowIntensity;
+        document.getElementById('ball-trail').checked = settings.ballTrail;
+        document.getElementById('particles').checked = settings.particles;
+        document.getElementById('colorblind-mode').checked = settings.colorBlindMode;
+        document.getElementById('reduced-motion').checked = settings.reducedMotion;
     </script>
 </body>
 </html>
